@@ -30,17 +30,17 @@ public class SecurityConfig {
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(); //O Spring usa BCrypt , que é seguro porque "embaralha" a senha antes de armazená-la.
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http.csrf(csrf -> csrf.disable()) //CSRF (Cross-Site Request Forgery) é desativado porque sua aplicação usa JWT, que é seguro por si só.
                 .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers("/api/auth/login").permitAll();
-                    authorize.requestMatchers(HttpMethod.POST, "/user").permitAll();
-                    authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                    authorize.anyRequest().authenticated();
+                    authorize.requestMatchers("/api/auth/login").permitAll(); //Permite longin sem autenticação
+                    authorize.requestMatchers(HttpMethod.POST, "/user").permitAll(); //permite criar usuario
+                    authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll(); //O navegador envia uma requisição OPTIONS e, pergunta: "Servidor, eu ( frontend.com) posso acessar sua API ( api.backend.com)
+                    authorize.anyRequest().authenticated(); // Exige autenticação para qualquer outra rota.
                 }).httpBasic(Customizer.withDefaults());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

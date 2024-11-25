@@ -28,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
 
-        String token = getTokenFromRequest(request);
+        String token = getTokenFromRequest(request); // capturar o token da requisição HTTP.
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             String username = jwtTokenProvider.getUsername(token);
@@ -48,8 +48,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
-        String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer ")) {
+        String header = request.getHeader("Authorization"); //Cabeçalho: Authorization: Bearer abc123
+                                                                //Token retornado: abc123
+        if (header != null && header.startsWith("Bearer ")) { //"Bearer " é um padrão comum para tokens JWT.
             return header.substring(7);
         }
         return null;

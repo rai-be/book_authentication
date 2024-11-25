@@ -56,3 +56,7 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
+
+    // JSON Web Token (JWT)
+    //Header: Contém o tipo de token (JWT) e o algoritmo de assinatura (ex.: HS256).
+    //Payload:Contém os dados do usuário e outras informações (chamados claims), como: Nome do usuário e data de expiração.
